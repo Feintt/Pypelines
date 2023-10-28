@@ -4,7 +4,7 @@
 
 from typing import Any, Callable
 
-class PipelineBrokenError(Exception):
+class PipeValidatorBrokenError(Exception):
     """Exception raised when a pipeline function fails."""
     ...
 
