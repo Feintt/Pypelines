@@ -1,19 +1,29 @@
-# Pipeline Library for Python
+# Python Pipeline Library: `pipeline-lib`
 
-`pipeline-lib` is a Python library that enables users to create a sequence of data processing steps, each represented by a function. Functions in a pipeline are connected using the '|' operator, allowing for clear and concise data flow. This library is particularly useful for data validation, transformation, and more.
+The `pipeline-lib` is a Python library designed to enhance the readability and structure of your code by introducing a clean, functional pipeline construction, similar to the `|>` operator found in languages like F# and Elixir. This approach allows for a more declarative style, where data transformations and validations are clear and linear, making the code easier to read, understand, and maintain.
 
-## Features
+## Vision
 
-- Easy-to-use pipeline creation using the '|' operator.
-- Customizable validation or processing functions.
-- Exception handling to capture and respond to errors in the pipeline.
+While the library currently provides the foundational capability to create and utilize pipelines in Python, our roadmap includes expanding its repertoire with a rich set of built-in functions. These functions will aid in various common tasks such as data validation, iteration, and connection, drawing inspiration from the functional programming paradigms in F# and Elixir.
+
+## Key Features
+
+- **Readability:** Simplifies your code structure by using the pipeline mechanism, making complex processes easy to follow.
+- **Extendibility:** Designed to allow easy integration of custom functions in the pipeline, providing flexibility for your unique requirements.
+- **Error Handling:** Captures and responds to errors within the pipeline through custom exception handling.
+
+In future releases, we plan to introduce:
+
+- **Built-in Validators:** Common checks for data types, formats, and content.
+- **Iteration Tools:** Simplified ways to handle batch processing and data iteration within the pipeline.
+- **Connection Helpers:** Utilities to facilitate easier data flow between different systems or components.
 
 ## Installation
 
-To install `pipeline-lib`, you can add this library directly to your project using pip:
+You can add this library directly to your project using pip:
 
 ```bash
-pip install git+https://github.com/Feintt/python-pipeline.git@main#egg=pipeline-lib
+pip install git+https://github.com/your-username/pipeline-lib.git@main#egg=pipeline-lib
 ```
 
 ## Quick Start
