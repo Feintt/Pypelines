@@ -10,13 +10,22 @@ class PipeFunction:
         self.func = func
 
     def __ror__(self, other):
-        def wrapped(*args, **kwargs):
-            result = other(*args, **kwargs)
+        # Check if 'other' is callable (a function) or a simple value
+        if callable(other):
+            # If it's a function, you keep the current behavior
+            def wrapped(*args, **kwargs):
+                result = other(*args, **kwargs)
+                if not self.func(result):
+                    raise PipelineBrokenError(f"Broken pipe error in function {self.func.__name__}")
+                return result
+
+            return wrapped
+        else:
+            # If it's a value, you directly apply your function to the value
+            result = other  # In this case, 'other' is a simple value, not a function
             if not self.func(result):
                 raise PipelineBrokenError(f"Broken pipe error in function {self.func.__name__}")
             return result
-
-        return wrapped
 
     def __call__(self, *args, **kwargs):
         return self.func(*args, **kwargs)
