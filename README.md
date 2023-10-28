@@ -13,4 +13,4 @@
 To install `pipeline-lib`, you can add this library directly to your project using pip:
 
 ```bash
-pip install git+https://github.com/your-username/pipeline-lib.git@main#egg=pipeline-lib
+pip install git+https://github.com/Feintt/python-pipeline.git@main#egg=pipeline-lib
