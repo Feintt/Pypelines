@@ -19,3 +19,26 @@ pip install git+https://github.com/Feintt/python-pipeline.git@main#egg=pipeline-
 ## Quick Start
 After installing the library, you can use it in your Python scripts. Here's a simple example:
 
+```python
+from pipeline_lib import PipeFunction, PipelineBrokenError
+
+# Define your functions using the PipeFunction decorator
+@PipeFunction
+def check_length(data, min_length=10):
+    """Check if the data meets the minimum length requirement."""
+    return len(data) >= min_length
+
+@PipeFunction
+def check_content(data):
+    """Validate the content of the data."""
+    # Replace with your validation logic
+    return "invalid" not in data
+
+# Create a pipeline with your functions
+try:
+    result = "your input data" | check_length | check_content
+    print("Data passed the pipeline checks:", result)
+except PipelineBrokenError as e:
+    print(f"Error in pipeline processing: {e}")
+
+```
