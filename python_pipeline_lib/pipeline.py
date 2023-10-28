@@ -13,7 +13,7 @@ class PipeFunction:
         def wrapped(*args, **kwargs):
             result = other(*args, **kwargs)
             if not self.func(result):
-                raise BrokenPipeError(f"Broken pipe error in function {self.func.__name__}")
+                raise PipelineBrokenError(f"Broken pipe error in function {self.func.__name__}")
             return result
 
         return wrapped
