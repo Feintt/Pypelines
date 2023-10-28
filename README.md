@@ -53,6 +53,57 @@ except PipelineBrokenError as e:
 
 ```
 
+## Simplifying Logic with Pipelines
+
+One of the primary motivations behind `pipeline-lib` is to streamline the way you handle sequential logic checks or transformations, which are commonly represented with multiple if-statements. With the introduction of the '|' operator for chaining functions, you can reduce the complexity and depth of your code significantly.
+
+### Traditional Approach:
+
+In traditional code, you might find yourself dealing with nested or sequential if-statements, like so:
+
+```python
+data = "Some input"
+
+if check_condition_one(data):
+    if check_condition_two(data):
+        if check_condition_three(data):
+            # ...and so on...
+            result = process_final(data)
+        else:
+            handle_error("Condition three failed.")
+    else:
+        handle_error("Condition two failed.")
+else:
+    handle_error("Condition one failed.")
+```
+This approach increases the complexity of your code, making it harder to read and maintain, especially as more conditions or steps are added.
+
+## With pipeline-lib:
+Our library allows you to simplify this structure drastically. The same logic can be represented linearly, reducing the cognitive load required to understand the flow:
+```python
+from pipeline_lib import PipeFunction, PipelineBrokenError
+
+@PipeFunction
+def check_condition_one(data):
+    # Your logic here
+    return "expected_result" in data
+
+@PipeFunction
+def check_condition_two(data):
+    # Your logic here
+    return "another_expectation" in data
+
+# ... additional conditions ...
+
+try:
+    result = data | check_condition_one | check_condition_two | ... | process_final
+    print("All conditions passed successfully:", result)
+except PipelineBrokenError as e:
+    print(f"A condition failed: {e}")
+```
+
+In this structure, each function represents a step in your processing pipeline. If any step fails, the `PipelineBrokenError` captures where and why, without the need for nested conditionals. This not only makes your code cleaner but also encapsulates each logic check within its function, promoting reusability and organization.
+
 ## Documentation
 
 ### Defining Pipeline Functions
