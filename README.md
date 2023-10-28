@@ -52,3 +52,23 @@ except PipelineBrokenError as e:
     print(f"Error in pipeline processing: {e}")
 
 ```
+
+## Documentation
+
+### Defining Pipeline Functions
+To create a new function that can be included in a pipeline, use the PipeFunction decorator:
+```python
+from pipeline_lib import PipeFunction
+
+@PipeFunction
+def your_function_name(your_parameters):
+    # Your code here
+    pass
+```
+
+### Creating a Pipeline
+Combine multiple functions into a pipeline using the '|' operator instead of using multiple if statements!
+
+```python
+result = your_input_data | function_one | function_two | function_three
+```
