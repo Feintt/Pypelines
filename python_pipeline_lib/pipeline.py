@@ -3,7 +3,12 @@ class PipelineBrokenError(Exception):
     pass
 
 
-class PipeFunction:
+class NullPipeBrokenError(Exception):
+    """Exception raised when a Null value is passed to a pipe."""
+    pass
+
+
+class PipeValidator:
     """Class used to create functions that can be pipelined using the '|' operator."""
 
     def __init__(self, func):
@@ -26,6 +31,17 @@ class PipeFunction:
             if not self.func(result):
                 raise PipelineBrokenError(f"Broken pipe error in function {self.func.__name__}")
             return result
+
+    def __call__(self, *args, **kwargs):
+        return self.func(*args, **kwargs)
+
+
+class PipeModifier:
+    def __init__(self, func):
+        self.func = func
+
+    def __ror__(self, other):
+        return self.func(other)
 
     def __call__(self, *args, **kwargs):
         return self.func(*args, **kwargs)
