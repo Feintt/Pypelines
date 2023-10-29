@@ -6,8 +6,7 @@ setup(
     packages=find_packages(),
     description='A mini library for creating function pipelines in Python',
     author='Feintt',
-    author_email='https://github.com/Feintt/python-pipeline',
-    url='https://github.com/yourusername/my_pipeline_lib',
+    url='https://github.com/Feintt/python-pipeline',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
