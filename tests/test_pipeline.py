@@ -7,6 +7,13 @@ from pypelines.validators.default import (
     contains_substring
 )
 from pypelines.modifiers import PipeModifier
+from pypelines.executers import PipeExecute
+from pypelines.executers.default import (
+    log_data,
+    debug_print,
+    performance_monitor,
+    sample_data
+)
 
 try:
 
@@ -62,3 +69,19 @@ result = (my_var
           )
 assert result == "HELLO@WORLD.COM", "Test4 failed"
 print("Test4 passed")
+
+my_var = "hello@world.com"
+result = (my_var
+          | starts_with("hello")
+          | is_email
+          | ends_with(".com")
+          | sample_data
+          | max_length(15)
+          | performance_monitor
+          | PipeModifier(str.upper)
+          | performance_monitor
+          | debug_print
+          | contains_substring("WORLD")
+          )
+assert result == "HELLO@WORLD.COM", "Test4 failed"
+print("Test5 passed")
