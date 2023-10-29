@@ -1,3 +1,4 @@
+import inspect
 class PipeValidatorBrokenError(Exception):
     """Exception raised when a pipeline function fails."""
     pass
