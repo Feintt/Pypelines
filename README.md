@@ -23,7 +23,7 @@ In future releases, we plan to introduce:
 You can add this library directly to your project using pip:
 
 ```bash
-pip install git+https://github.com/your-username/pipeline-lib.git@main#egg=pipeline-lib
+pip install git+https://github.com/Feintt/Pypelines.git@main#egg=pypelines
 ```
 
 ## Quick Start
