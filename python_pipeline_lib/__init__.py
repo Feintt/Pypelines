@@ -1,6 +1,6 @@
 from .pipeline import (
     PipeValidator,
     PipeModifier,
-    PipelineBrokenError,
+    PipeValidatorBrokenError,
     NullPipeBrokenError
 )
