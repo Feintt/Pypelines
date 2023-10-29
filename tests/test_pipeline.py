@@ -1,7 +1,5 @@
-from pypelines import (
-    PipeValidator,
-    PipeValidatorBrokenError
-)
+from pypelines.validators import PipeValidator, PipeValidatorBrokenError
+from pypelines.modifiers import PipeModifier
 
 try:
 
@@ -18,6 +16,22 @@ try:
     my_email = "example@gmail.com"
 
     if result := (my_email | is_string | contains_at):
-        pass
+        assert result == my_email
 except PipeValidatorBrokenError as e:
     print(f"Validatuon error: {e}")
+
+
+@PipeModifier
+def square(x):
+    return x * x
+
+
+@PipeModifier
+def sum_list(x: list):
+    return sum(x)
+
+
+my_list = [1, 2, 3, 4, 5]
+
+if result := (my_list | sum_list | square):
+    assert result == 225

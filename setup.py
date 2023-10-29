@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pypelines',
-    version='0.1.5',
+    version='0.1.6',
     packages=find_packages(),
     description='A mini library for creating function pipelines in Python',
     author='Feintt',
