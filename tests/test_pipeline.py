@@ -1,4 +1,4 @@
-from pypelines.validators import PipeValidator, PipeValidatorBrokenError
+from pypelines.validators import PipeValidator, PipeValidatorError
 from pypelines.validators.default import (
     is_email,
     starts_with,
@@ -31,7 +31,7 @@ try:
         print("Test2 passed")
 
 
-except PipeValidatorBrokenError as e:
+except PipeValidatorError as e:
     print(f"Validation error: {e}")
 
 

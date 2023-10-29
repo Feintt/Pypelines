@@ -1,4 +1,4 @@
-class PipeValidatorBrokenError(Exception):
+class PipeValidatorError(Exception):
     """Exception raised when a pipeline function fails."""
     pass
 
@@ -32,9 +32,9 @@ class PipeValidator:
             # Call the actual function with the prepared arguments and keyword arguments.
             result = self.func(*all_args, **self.kwargs)
             if not result:
-                raise PipeValidatorBrokenError(f"Broken pipe error in function {self.func.__name__}")
+                raise PipeValidatorError(f"Broken pipe error in function {self.func.__name__}")
 
-        except PipeValidatorBrokenError as e:
+        except PipeValidatorError as e:
             raise e
         except Exception as e:
             raise UnknownPipeValidatorError(f"Unknown error in function {self.func.__name__}: {e}") from e
