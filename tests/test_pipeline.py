@@ -77,11 +77,33 @@ result = (my_var
           | ends_with(".com")
           | sample_data
           | max_length(15)
-          | performance_monitor
           | PipeModifier(str.upper)
-          | performance_monitor
-          | debug_print
           | contains_substring("WORLD")
           )
 assert result == "HELLO@WORLD.COM", "Test4 failed"
 print("Test5 passed")
+
+
+@PipeModifier
+def return_two_values(x):
+    return x, x + 1
+
+
+@PipeModifier(unpack=True)
+def sum_two_values(x, y):
+    return x + y
+
+
+@PipeModifier
+def raise_by(x, by, plus):
+    return x ** by + plus
+
+
+z = 2
+result = (z
+          | return_two_values
+          | sum_two_values
+          | raise_by(2, 1)
+          )
+assert result == 26, "Test6 failed"
+print("Test6 passed")
