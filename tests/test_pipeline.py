@@ -4,7 +4,9 @@ from pypelines.validators.default import (
     starts_with,
     ends_with,
     max_length,
-    contains_substring
+    contains_substring,
+    is_empty,
+    is_not_empty
 )
 from pypelines.modifiers import PipeModifier
 from pypelines.executers import PipeExecute
@@ -13,6 +15,9 @@ from pypelines.executers.default import (
     debug_print,
     performance_monitor,
     sample_data
+)
+from pypelines.modifiers.default import (
+    enum_list
 )
 
 try:
@@ -95,15 +100,33 @@ def sum_two_values(x, y):
 
 
 @PipeModifier
-def raise_by(x, by, plus):
-    return x ** by + plus
+def raise_by(x, by):
+    return x ** by
 
 
 z = 2
 result = (z
           | return_two_values
           | sum_two_values
-          | raise_by(2, 1)
+          | raise_by(2)
           )
-assert result == 26, "Test6 failed"
+assert result == 25, "Test6 failed"
 print("Test6 passed")
+
+
+def do_something():
+    return 5
+
+
+result = (do_something()
+          | raise_by(5)
+          )
+assert result == 3125, "Test7 failed"
+print("Test7 passed")
+
+my_list = [1, 2, 3, 4, 5]
+
+if result := (my_list | sum_list | square | raise_by(2)):
+    assert result == 50625, "Test8 failed"
+    print("Test8 passed")
+

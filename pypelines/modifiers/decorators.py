@@ -22,12 +22,12 @@ class PipeModifier:
             return self
 
     def __ror__(self, other):
+        # Determine whether to unpack 'other' based on its type and the 'unpack' flag.
         if self.unpack and isinstance(other, tuple):
-            all_args = *other, *self.params
+            all_args = *other, *self.params  # Unpack 'other' if it's a tuple and combine it with 'self.params'.
         else:
-            all_args = (other,) + self.params
+            all_args = (other,) + self.params  # Keep 'other' as is.
 
-        # Call the function with the constructed args.
-        result = self.func(*all_args, **self.kwargs)
+        # Now, we execute the function with all the arguments.
+        return self.func(*all_args, **self.kwargs)
 
-        return result
