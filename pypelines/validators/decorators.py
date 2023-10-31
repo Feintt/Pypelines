@@ -23,11 +23,12 @@ class PipeValidator:
     :return: The decorated function.
     """
 
-    def __init__(self, func=None, unpack=False):
+    def __init__(self, func=None, unpack=False, skip=True):
         self.func = func
         self.unpack = unpack
         self.params = ()
         self.kwargs = {}
+        self.skip = skip
 
     def __call__(self, *args, **kwargs):
         if self.func is None:
@@ -56,14 +57,6 @@ class PipeValidator:
         if not result or isinstance(result, Exception) or result is None:
             raise PipeValidatorError(f"Validation failed in function {self.func.__name__}")
 
-        # except PipeValidatorError as e:
-        #    # Handle known validation errors.
-        #    print(f"Validation error: {e}")
-        #    return None  # You could also re-raise the exception or handle it differently.
-
-        # except Exception as e:
-        #    # Handle unexpected errors.
-        #    print(f"An unexpected error occurred: {e}")
-        #    return None  # You could also re-raise the exception or handle it differently.
-
-        return other  # The result can be used as input for the next stage in the pipeline.
+        if self.skip:
+            return other
+        return result

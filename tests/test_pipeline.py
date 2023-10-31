@@ -1,24 +1,6 @@
-from pypelines.validators import PipeValidator, PipeValidatorError
-from pypelines.validators.default import (
-    is_email,
-    starts_with,
-    ends_with,
-    max_length,
-    contains_substring,
-    is_empty,
-    is_not_empty
-)
-from pypelines.modifiers import PipeModifier
-from pypelines.executers import PipeExecute
-from pypelines.executers.default import (
-    log_data,
-    debug_print,
-    performance_monitor,
-    sample_data
-)
-from pypelines.modifiers.default import (
-    enum_list
-)
+from pypelines.validators import *
+from pypelines.modifiers import *
+from pypelines.executers import *
 
 try:
 
@@ -129,4 +111,15 @@ my_list = [1, 2, 3, 4, 5]
 if result := (my_list | sum_list | square | raise_by(2)):
     assert result == 50625, "Test8 failed"
     print("Test8 passed")
+
+
+@PipeValidator(unpack=True, skip=False)
+def authenticate_user(username, password):
+    if username == "admin" and password == "admin":
+        return True
+    else:
+        return False
+
+
+(("admin", "admin") | authenticate_user() | debug_print)
 
