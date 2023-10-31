@@ -123,3 +123,6 @@ def authenticate_user(username, password):
 
 (("admin", "admin") | authenticate_user() | debug_print)
 
+
+my_list = "abcde"
+my_list | enum(lambda x: [y for y in x]) | PipeExecute(print)
