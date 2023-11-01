@@ -23,7 +23,7 @@ class PipeModifier:
 
     def __ror__(self, other):
         # Determine whether to unpack 'other' based on its type and the 'unpack' flag.
-        if self.unpack and isinstance(other, tuple):
+        if self.unpack and isinstance(other, tuple) or isinstance(other, list) or isinstance(other, set):
             all_args = *other, *self.params  # Unpack 'other' if it's a tuple and combine it with 'self.params'.
         else:
             all_args = (other,) + self.params  # Keep 'other' as is.
