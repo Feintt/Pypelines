@@ -125,3 +125,8 @@ def authenticate_user(username, password):
 
 my_list = "abcde"
 my_list | enum(lambda x: [y for y in x]) | PipeExecute(print)
+
+
+my_list = [1, 2, 3, 4, 5]
+my_list | PipeExecute(print)
+

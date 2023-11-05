@@ -45,7 +45,7 @@ class PipeValidator:
         # The __ror__ method is called with the "|" operator. 'Other' is the left-hand operand.
         # try:
         # Determine whether to unpack 'other' based on its type and the 'unpack' flag.
-        if self.unpack and isinstance(other, tuple):
+        if self.unpack and isinstance(other, tuple) or self.unpack and isinstance(other, list) or self.unpack and isinstance(other, set):
             all_args = *other, *self.params  # Unpack 'other' if it's a tuple and combine it with 'self.params'.
         else:
             all_args = (other,) + self.params  # Keep 'other' as is.
