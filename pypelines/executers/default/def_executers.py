@@ -1,7 +1,7 @@
-import inspect
 import logging
 import random
 import time
+import traceback
 
 from pypelines.executers import PipeExecute
 
@@ -18,9 +18,20 @@ def log_data(data, level='info'):
 
 @PipeExecute
 def debug_print(data):
-    # Get the calling frame and information
-    frame_info = inspect.stack()[1]
-    print(f"Debug print called from {frame_info.filename} at line {frame_info.lineno}: {data}")
+    # Retrieve the current stack trace
+    stack = traceback.extract_stack()
+
+    # Find the stack frame outside the pypelines package
+    caller_frame = next(
+        (frame for frame in reversed(stack) if 'pypelines' not in frame.filename),
+        None
+    )
+
+    # If a caller frame was found, print its details
+    if caller_frame:
+        print(f"Debug print called from {caller_frame.filename} at line {caller_frame.lineno}: \nData: {data}")
+    else:
+        print("Caller frame not found.")
 
 
 @PipeExecute
