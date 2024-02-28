@@ -4,12 +4,11 @@ class Pipeable:
         # Initialize changeset with two keys for organization
         self.changeset = {"changes": {}, "errors": {}}
 
-    def add_error(self, key, message):
-        # Check if the key already exists, if not initialize as a list
-        if key not in self.changeset["errors"]:
-            self.changeset["errors"][key] = []
-        # Append the new error message to the list under the key
-        self.changeset["errors"][key].append(message)
+    def add_error(self, error_dict):
+        for key, message in error_dict.items():
+            if key not in self.changeset["errors"]:
+                self.changeset["errors"][key] = []
+            self.changeset["errors"][key].append(message)
 
     def get_changeset(self):
         # Method to access the changeset
@@ -18,28 +17,21 @@ class Pipeable:
     def __or__(self, func):
         if func == print:
             print(self.value)
-            return self  # Return self to maintain the chain with the current state
+            return self
         elif callable(func):
-            result = func(self.value)  # Call the function with the current value
-            if isinstance(result, dict) and "error" in result:
-                # If the result is a dict containing an error, update the changeset
-                error_message = result["error"]
-                # Assuming you want a generic error key or some logic to generate a unique key
-                self.add_error("error", error_message)
-                return self  # Return self to continue the chain even after an error
-            else:
-                # If no error, update the value with the result and return a new Pipeable object
-                return Pipeable(result)
+            result = func(self.value)  # Execute the provided function
+            # Check if the result indicates an error
+            if isinstance(result, tuple) and result[0] == "error":
+                self.add_error(result[1])
+            # No else needed; we no longer create a new Pipeable instance
+            return self  # Always return the current instance
         elif isinstance(func, tuple) and callable(func[0]):
             function, *args = func
-            args = (self.value, *args)  # Ensure the first argument is always the current value
-            result = function(*args)
-            if isinstance(result, dict) and "error" in result:
-                error_message = result["error"]
-                self.add_error("error", error_message)
-                return self
-            else:
-                return Pipeable(result)
+            # Execute the provided function with additional arguments
+            result = function(self.value, *args)
+            if isinstance(result, tuple) and result[0] == "error":
+                self.add_error(result[1])
+            return self  # Always return the current instance
         else:
             raise ValueError("Right operand must be callable or a tuple with a callable as the first element")
 
