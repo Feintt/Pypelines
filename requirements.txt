@@ -1,0 +1,2 @@
+setuptools~=69.0.2
+jsonschema~=4.21.1
