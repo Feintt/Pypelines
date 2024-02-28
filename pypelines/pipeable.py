@@ -10,25 +10,27 @@ class Pipeable:
                 self.changeset["errors"][key] = []
             self.changeset["errors"][key].append(message)
 
+    def add_change(self, change_dict):
+        for key, change in change_dict.items():
+            # Assume changes are to be overwritten or added, not appended like errors
+            self.changeset["changes"][key] = change
+
     def get_changeset(self):
         # Method to access the changeset
         return self.changeset
 
     def __or__(self, operation):
-        if operation == print:  # Special case for print
+        if operation == print:
             print(self.value)
             return self
 
         func, *args = (operation if isinstance(operation, tuple) else (operation,))
 
-        # Handle dot notation in args before passing to the function
         processed_args = []
         for arg in args:
-            if isinstance(arg, str) and "." in arg:  # Check if arg is a string with dot notation
+            if isinstance(arg, str) and "." in arg:
                 processed_arg = self.get_nested_value(arg)
                 if processed_arg is None:
-                    # If nested value not found, you can handle the error here
-                    # For now, let's return self to continue the pipeline
                     print(f"Warning: Nested key '{arg}' not found.")
                     return self
                 processed_args.append(processed_arg)
@@ -37,9 +39,11 @@ class Pipeable:
 
         if callable(func):
             result = func(self.value, *processed_args)
-            if isinstance(result, tuple) and result[0] == "error":
-                self.add_error(result[1])
-            # Even if no error, we update the value to support transformations
+            if isinstance(result, tuple):
+                if result[0] == "error":
+                    self.add_error(result[1])
+                elif result[0] == "change":
+                    self.add_change(result[1])
             elif result is not None:
                 self.value = result
             return self
