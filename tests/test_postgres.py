@@ -23,4 +23,4 @@ result = (Pipeable(postgres_config)
           | close_connection
           )
 
-print(result)
+print(result.get_changeset())

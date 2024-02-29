@@ -4,6 +4,7 @@ import inspect
 class Pipeable:
     def __init__(self, value):
         self.value = value
+        self.should_continue = True
         self.changeset = {"changes": {}, "errors": {}}
 
     def add_error(self, error_dict):
@@ -20,6 +21,9 @@ class Pipeable:
         return self.changeset
 
     def __or__(self, operation):
+        if not self.should_continue:  # Check if the pipeline should continue
+            return self  # Exit if it should not
+
         if operation == print:
             print(self.value)
             return self
@@ -47,6 +51,10 @@ class Pipeable:
 
         try:
             result = func(*args)
+            if result == "halt":  # Check for "halt" signal
+                self.should_continue = False
+                print("Halting pipeline execution.")
+                return self  # Exit the pipeline
         except Exception as e:
             print(f"Error during pipeline operation: {e}")
             return self
