@@ -10,7 +10,7 @@ postgres_config = {
 }
 
 
-def print_with_format(data, _changeset):
+def print_with_format(data):
     for user in data:
         print(f"User: {user}")
     return data
@@ -18,6 +18,8 @@ def print_with_format(data, _changeset):
 
 result = (Pipeable(postgres_config)
           | start_connection
+          | (get_all, "users")
+          | print_with_format
           | close_connection
           )
 
