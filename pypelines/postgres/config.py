@@ -1,7 +1,7 @@
 import psycopg2
 
 
-def start_connection(config, _changeset):
+def start_connection(config):
     """
     Start a connection to a PostgreSQL database using the provided configuration.
     The function expects a dictionary with the following keys:

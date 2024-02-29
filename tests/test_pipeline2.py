@@ -16,7 +16,7 @@ test_json = {
 }
 
 
-def validate_interests(data, key, _changeset):
+def validate_interests(data, key):
     valid_interests = ["tech", "music", "books", "sports", "travel"]
     interests = data.get(key, {}).get("interests", [])
     invalid_interests = [interest for interest in interests if interest not in valid_interests]
@@ -25,7 +25,7 @@ def validate_interests(data, key, _changeset):
     return data
 
 
-def validate_future_date(data, key, date_format="%Y-%m-%d", _changeset=None):
+def validate_future_date(data, key, date_format="%Y-%m-%d"):
     today = datetime.now().date()
     try:
         date_value = datetime.strptime(data[key], date_format).date()
@@ -36,7 +36,7 @@ def validate_future_date(data, key, date_format="%Y-%m-%d", _changeset=None):
     return data
 
 
-def validate_value(data, value, list_of_values, _changeset=None):
+def validate_value(data, value, list_of_values):
     if value not in list_of_values:
         return "error", {value: f"Value is not in the list of valid values: {', '.join(list_of_values)}"}
     return data

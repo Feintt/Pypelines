@@ -3,7 +3,7 @@ from pypelines.json_validation import *
 
 
 # Additional validation functions for the preferences and address
-def validate_preferences(data, key, _changeset):
+def validate_preferences(data, key):
     newsletter_options = ["daily", "weekly", "monthly"]
     valid_themes = ["technology", "health", "sports", "entertainment"]
 
@@ -25,7 +25,7 @@ def validate_preferences(data, key, _changeset):
     return data
 
 
-def validate_address(data, key, changeset):
+def validate_address(data, key):
     required_keys = ["street", "city", "zip"]
     missing_keys = [k for k in required_keys if k not in data.get(key, {})]
     if missing_keys:

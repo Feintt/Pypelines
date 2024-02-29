@@ -1,3 +1,6 @@
+import inspect
+
+
 class Pipeable:
     def __init__(self, value):
         self.value = value
@@ -22,20 +25,28 @@ class Pipeable:
             return self
 
         if isinstance(operation, tuple):
-            func, *args = operation  # Unpack the function and its arguments
-            # Process each argument, checking for nested keys
-            processed_args = [self.get_nested_value(arg) if isinstance(arg, str) and '.' in arg else arg for arg in
-                              args]
-            args = [self.value, *processed_args]  # Include self.value as the first argument
+            func, *operation_args = operation
         else:
             func = operation
-            args = [self.value]  # Use self.value as the only argument if no additional args are specified
+            operation_args = []
 
-        # Append the changeset as the last argument
-        args_with_changeset = [*args, self.changeset]
+        # Process each argument, checking for nested keys
+        processed_args = [self.get_nested_value(arg) if isinstance(arg, str) and '.' in arg else arg for arg in
+                          operation_args]
+
+        # Always include self.value as the first argument, even if no other args are specified
+        args = [self.value] + processed_args
+
+        # Inspect the function signature to determine if 'changeset' is expected
+        sig = inspect.signature(func)
+        expects_changeset = 'changeset' in sig.parameters
+
+        # Append changeset as the last argument only if the function expects it
+        if expects_changeset:
+            args.append(self.changeset)
 
         try:
-            result = func(*args_with_changeset)
+            result = func(*args)
         except Exception as e:
             print(f"Error during pipeline operation: {e}")
             return self

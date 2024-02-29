@@ -1,12 +1,11 @@
 from pypelines import Pipeable
 
 
-def test_func(data, _changeset):
+def test_func(_data):
     return "change", {"key3": "value3"}
 
 
-def test_func2(data, _changeset):
-    print(_changeset)
+def test_func2(_data, changeset):
     return "change", {"key4": "value4"}
 
 
