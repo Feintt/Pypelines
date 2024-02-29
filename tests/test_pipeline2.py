@@ -2,8 +2,6 @@ from pypelines import Pipeable
 from pypelines.json_validation import *
 from datetime import datetime
 
-# Define validation functions here...
-
 # Validation Pipeline
 test_json = {
     "username": "newuser123",
@@ -18,7 +16,7 @@ test_json = {
 }
 
 
-def validate_interests(data, key):
+def validate_interests(data, key, _changeset):
     valid_interests = ["tech", "music", "books", "sports", "travel"]
     interests = data.get(key, {}).get("interests", [])
     invalid_interests = [interest for interest in interests if interest not in valid_interests]
@@ -27,7 +25,7 @@ def validate_interests(data, key):
     return data
 
 
-def validate_future_date(data, key, date_format="%Y-%m-%d"):
+def validate_future_date(data, key, date_format="%Y-%m-%d", _changeset=None):
     today = datetime.now().date()
     try:
         date_value = datetime.strptime(data[key], date_format).date()
@@ -38,7 +36,7 @@ def validate_future_date(data, key, date_format="%Y-%m-%d"):
     return data
 
 
-def validate_value(data, value, list_of_values):
+def validate_value(data, value, list_of_values, _changeset=None):
     if value not in list_of_values:
         return "error", {value: f"Value is not in the list of valid values: {', '.join(list_of_values)}"}
     return data
@@ -51,8 +49,8 @@ result = (Pipeable(test_json)
           | (validate_numeric_range, "age", 18, 99)
           | (validate_value, "preferences.newsletter", ["daily", "weekly", "monthly"])
           | (validate_interests, "preferences")
-          | (validate_date, "registration_date")
-          | (validate_future_date, "registration_date")
+          | (validate_date, "registration_date", "%Y-%m-%d")
+          | (validate_future_date, "registration_date", "%Y-%m-%d")
           )
 
 # Output the result

@@ -8,12 +8,12 @@ blog_post = {
 }
 
 
-def to_upper(data, key):
+def to_upper(data, key, _changeset):
     data[key] = data[key].upper()
     return data
 
 
-def add_start_date(data):
+def add_start_date(data, _changeset):
     return "change", {"start_date": datetime.now()}
 
 
